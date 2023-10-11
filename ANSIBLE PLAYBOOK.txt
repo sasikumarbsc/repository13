@@ -1,0 +1,21 @@
+ - hosts: web
+  remote_user: ec2-user
+  become: yes
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd 
+        state: latest
+    - name: copy file
+      copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+        mode: '0644'
+    notify: restart
+  handlers:
+    - name: restart 
+      service:
+        name: httpd
+        state: started
+
+
